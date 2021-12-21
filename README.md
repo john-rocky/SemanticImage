@@ -23,10 +23,7 @@ let semanticImage = SemanticImage()
 
 ### Original
 
-<img width="200" alt="スクリーンショット 2021-06-22 6 25 04" src="https://user-images.githubusercontent.com/23278992/122830079-cc028c80-d322-11eb-87a3-8aa4803860a4.png">
-
-<img src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg", width=300>
-
+<img width="200" alt="スクリーンショット 2021-06-22 6 25 04" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg">
 
 ### Person Mask
 

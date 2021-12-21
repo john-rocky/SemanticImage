@@ -9,6 +9,7 @@ public class SemanticImage {
     }
     
     lazy var personSegmentationRequest = VNGeneratePersonSegmentationRequest()
+    lazy var faceRectangleRequest = VNDetectFaceRectanglesRequest()
     let ciContext = CIContext()
     
     public func personMaskImage(uiImage:UIImage) -> UIImage? {
@@ -68,6 +69,38 @@ public class SemanticImage {
         guard let safeCGImage = ciContext.createCGImage(blended, from: blended.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
         let blendedUIImage = UIImage(cgImage: safeCGImage)
         return blendedUIImage
+    }
+    
+    func faceRectangle(uiImage:UIImage) -> UIImage? {
+        guard let ciImage = CIImage(image: uiImage) else { print("Image processing failed.Please try with another image."); return nil }
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try handler.perform([faceRectangleRequest])
+            guard let result = faceRectangleRequest.results?.first else { print("Image processing failed.Please try with another image."); return nil }
+            let roll = CGFloat(truncating: (result.roll)!)
+            if roll != 0 {
+                let rotatedOriginalImage:CIImage = ciImage.transformed(by: CGAffineTransform(rotationAngle: -roll))
+                let imageData = ciContext.pngRepresentation(of: rotatedOriginalImage, format: CIFormat.ARGB8, colorSpace: CGColorSpace(name: "kCGColorSpaceDisplayP3" as CFString)!)
+                let cropHandler = VNImageRequestHandler(data: imageData!, options: [:])
+                try cropHandler.perform([faceRectangleRequest])
+                guard let cropResult = faceRectangleRequest.results?.first else { print("Image processing failed.Please try with another image."); return nil }
+                let faceBoundingBox = cropResult.boundingBox
+                let faceRect = VNImageRectForNormalizedRect(faceBoundingBox,Int(rotatedOriginalImage.extent.size.width), Int(rotatedOriginalImage.extent.size.height))
+                let faceImage = rotatedOriginalImage.cropped(to: faceRect)
+                guard let final = ciContext.createCGImage(faceImage, from: faceImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
+                let uiimage =  UIImage(cgImage: final)
+            } else {
+                let boundingBox = result.boundingBox
+                let faceRect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))
+                let faceImage = ciImage.cropped(to: faceRect)
+                guard let final = ciContext.createCGImage(faceImage, from: faceImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
+                let uiimage =  UIImage(cgImage: final)
+                return uiImage
+            }
+        } catch let error {
+            print("Vision error \(error)")
+            return nil
+        }
     }
     
     func scaleMaskImage(maskCIImage:CIImage, originalCIImage:CIImage) -> CIImage {

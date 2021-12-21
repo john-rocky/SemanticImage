@@ -61,12 +61,12 @@ public class SemanticImage {
         let croppedBG = scaledBG.cropped(to: cropRect)
         let translate = CGAffineTransform(translationX: -croppedBG.extent.minX, y: -croppedBG.extent.minY)
         let traslatedBG = croppedBG.transformed(by: translate)
-        print(traslatedBG.extent)
         guard let blended = CIFilter(name: "CIBlendWithMask", parameters: [
             kCIInputImageKey: personCIImage,
             kCIInputBackgroundImageKey:traslatedBG,
             kCIInputMaskImageKey:maskCIImage])?.outputImage else { return nil }
-        let blendedUIImage = UIImage(ciImage: blended)
+        guard let safeCGImage = ciContext.createCGImage(blended, from: blended.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+        let blendedUIImage = UIImage(cgImage: safeCGImage)
         return blendedUIImage
     }
     

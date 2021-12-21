@@ -71,7 +71,7 @@ public class SemanticImage {
         return blendedUIImage
     }
     
-    func faceRectangle(uiImage:UIImage) -> UIImage? {
+    public func faceRectangle(uiImage:UIImage) -> UIImage? {
         guard let ciImage = CIImage(image: uiImage) else { print("Image processing failed.Please try with another image."); return nil }
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
         do {

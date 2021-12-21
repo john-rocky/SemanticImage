@@ -31,5 +31,13 @@ let semanticImage = SemanticImage()
 
 
 ```swift
-let maskImage = semanticImage.personMaskImage(uiImage: yourUIImage)
+let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
+```
+
+### Swap the background of a person
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146862832-14c0f002-b4e7-43c6-92e4-8595e99e15fd.JPG">
+
+```swift
+let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: yourUIImage, backgroundUIImage: yourBackgroundUIImage)
 ```

@@ -43,3 +43,11 @@ let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
 ```swift
 let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: yourUIImage, backgroundUIImage: yourBackgroundUIImage)
 ```
+
+### Crop a face rectangle
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">
+
+```swift
+let faceImage:UIImage? = sematicImage.faceRectangle(uiImage: image)
+```

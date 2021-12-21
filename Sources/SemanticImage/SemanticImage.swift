@@ -33,7 +33,7 @@ public class SemanticImage {
     }
     
     
-    public func blendPersonImage(personUIImage: UIImage, backgroundUIImage: UIImage) -> UIImage? {
+    public func swapBackgroundOfPerson(personUIImage: UIImage, backgroundUIImage: UIImage) -> UIImage? {
         let newPersonUIImage = getCorrectOrientationUIImage(uiImage:personUIImage)
         let newBackgroundUIImage = getCorrectOrientationUIImage(uiImage:backgroundUIImage)
         

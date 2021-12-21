@@ -23,11 +23,15 @@ let semanticImage = SemanticImage()
 
 ### Original
 
+
  <img src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg", width=300>
+
 
 ### Person Mask
 
+
  <img src="https://user-images.githubusercontent.com/23278992/146860762-01faf109-019f-4644-9e02-65c04adc1b79.JPG", width=300>
+
 
 ```swift
 let maskImage = semanticImage.personMaskImage(uiImage: yourUIImage)

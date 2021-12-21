@@ -89,6 +89,7 @@ public class SemanticImage {
                 let faceImage = rotatedOriginalImage.cropped(to: faceRect)
                 guard let final = ciContext.createCGImage(faceImage, from: faceImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
                 let uiimage =  UIImage(cgImage: final)
+                return uiimage
             } else {
                 let boundingBox = result.boundingBox
                 let faceRect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))

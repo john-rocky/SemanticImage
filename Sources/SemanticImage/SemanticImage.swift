@@ -10,6 +10,8 @@ public class SemanticImage {
     
     lazy var personSegmentationRequest = VNGeneratePersonSegmentationRequest()
     lazy var faceRectangleRequest = VNDetectFaceRectanglesRequest()
+    lazy var humanRectanglesRequest = VNDetectHumanRectanglesRequest()
+
     let ciContext = CIContext()
     
     public func personMaskImage(uiImage:UIImage) -> UIImage? {
@@ -99,6 +101,25 @@ public class SemanticImage {
                 guard let final = ciContext.createCGImage(faceImage, from: faceImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
                 let finalUiimage =  UIImage(cgImage: final)
                 return finalUiimage
+        } catch let error {
+            print("Vision error \(error)")
+            return nil
+        }
+    }
+    
+    public func humanRectangle(uiImage:UIImage) -> UIImage? {
+        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return nil }
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try handler.perform([humanRectanglesRequest])
+            guard let result = humanRectanglesRequest.results?.first else { print("Image processing failed.Please try with another image."); return nil }
+            let boundingBox = result.boundingBox
+            let humanRect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))
+            let humanImage = ciImage.cropped(to: humanRect)
+            guard let final = ciContext.createCGImage(humanImage, from: humanImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
+            let finalUiimage =  UIImage(cgImage: final)
+            return finalUiimage
         } catch let error {
             print("Vision error \(error)")
             return nil

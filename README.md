@@ -19,6 +19,8 @@ import SemanticImage
 let semanticImage = SemanticImage()
 ```
 
+Requires iOS 15 or above
+
 # Filter Collection
 
 ### Original

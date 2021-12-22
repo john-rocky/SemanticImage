@@ -68,6 +68,8 @@ let bodyImage:UIImage? = sematicImage.humanRectangle(uiImage: image)
 let faceImages:[UIImage] = sematicImage.faceRectangles(uiImage: image)
 ```
 
+### Crop body rectangles
+
 <img width="300" src="https://user-images.githubusercontent.com/23278992/147015645-f8b5d6a1-95cb-4656-8b51-57b24b8e82a5.jpeg"> <img width="100" src="https://user-images.githubusercontent.com/23278992/147015635-52e77dc8-87b7-44f4-89ba-cbad4e7d94d4.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147015636-d36a4cfc-202f-4ea1-bd17-860180e1001a.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147015640-33d58d38-af34-4dc5-bb6a-f46994732d8a.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147015642-ada60f8d-7637-4823-b343-e5fb4dd4c275.JPG">
 
 ```swift

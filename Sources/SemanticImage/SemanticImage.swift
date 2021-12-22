@@ -11,17 +11,9 @@ public class SemanticImage {
     lazy var personSegmentationRequest = VNGeneratePersonSegmentationRequest()
     lazy var faceRectangleRequest = VNDetectFaceRectanglesRequest()
     lazy var humanRectanglesRequest = VNDetectHumanRectanglesRequest()
+    lazy var animalRequest = VNRecognizeAnimalsRequest()
 
     let ciContext = CIContext()
-    
-    lazy var animeRequest:VNCoreMLRequest? =  {
-        let url = try? Bundle.module.url(forResource: "animegan_face_paint_512_v2_256", withExtension: "mlmodelc")
-        let mlModel = try! MLModel(contentsOf: url!, configuration: MLModelConfiguration())
-        guard let model = try? VNCoreMLModel(for: mlModel) else { return nil }
-        let request = VNCoreMLRequest(model: model)
-        request.imageCropAndScaleOption = .scaleFill
-        return request
-    }()
     
     public func personMaskImage(uiImage:UIImage) -> UIImage? {
         let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
@@ -209,21 +201,53 @@ public class SemanticImage {
         }
     }
     
-    public func anime(uiImage:UIImage) -> UIImage? {
-        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
-        guard let ciImage = CIImage(image: newImage), let request = animeRequest else { print("Image processing failed.Please try with another image."); return nil }
+    public func animalRectangle(uiImage:UIImage) -> UIImage?{
         
+        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return nil }
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
         do {
-            try handler.perform([request])
-            guard let result = request.results?.first as? VNPixelBufferObservation else {print("Image processing failed.Please try with another image."); return nil}
-            let resultCIImage = CIImage(cvPixelBuffer: result.pixelBuffer)
-            let resizedCIImage = resultCIImage.resize(as: ciImage.extent.size)
-            let final = UIImage(ciImage: resizedCIImage)
-            return final
+            try handler.perform([animalRequest])
+            guard let result = animalRequest.results?.first else { print("Image processing failed.Please try with another image."); return nil }
+            let boundingBox = result.boundingBox
+            let rect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))
+            let croppedImage = ciImage.cropped(to: rect)
+            guard let final = ciContext.createCGImage(croppedImage, from: croppedImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
+            let finalUiimage =  UIImage(cgImage: final)
+            return finalUiimage
         } catch let error {
             print("Vision error \(error)")
             return nil
+        }
+    }
+    
+    public func animalRectangles(uiImage:UIImage) -> [UIImage] {
+        var animalUIImages:[UIImage] = []
+        let semaphore = DispatchSemaphore(value: 0)
+        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return [] }
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try handler.perform([animalRequest])
+            guard let results = animalRequest.results else { print("Image processing failed.Please try with another image."); return [] }
+            guard !results.isEmpty else { print("Image processing failed.Please try with another image."); return [] }
+            
+            for result in results {
+                let boundingBox = result.boundingBox
+                let rect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))
+                let croppedImage = ciImage.cropped(to: rect)
+                guard let final = ciContext.createCGImage(croppedImage, from: croppedImage.extent) else { print("Image processing failed.Please try with another image."); return [] }
+                let finalUiimage =  UIImage(cgImage: final)
+                animalUIImages.append(finalUiimage)
+                if animalUIImages.count == results.count {
+                    semaphore.signal()
+                }
+            }
+            semaphore.wait()
+            return animalUIImages
+        } catch let error {
+            print("Vision error \(error)")
+            return []
         }
     }
     

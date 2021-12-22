@@ -1,0 +1,73 @@
+[
+  {
+    "metadataOutputVersion" : "3.0",
+    "storagePrecision" : "Float32",
+    "outputSchema" : [
+      {
+        "height" : "256",
+        "colorspace" : "RGB",
+        "isOptional" : "0",
+        "width" : "256",
+        "isColor" : "1",
+        "formattedType" : "Image (Color 256 × 256)",
+        "hasSizeFlexibility" : "0",
+        "type" : "Image",
+        "shortDescription" : "",
+        "name" : "activation_out"
+      }
+    ],
+    "modelParameters" : [
+
+    ],
+    "specificationVersion" : 5,
+    "computePrecision" : "Float16",
+    "isUpdatable" : "0",
+    "availability" : {
+      "macOS" : "11.0",
+      "tvOS" : "14.0",
+      "watchOS" : "7.0",
+      "iOS" : "14.0",
+      "macCatalyst" : "14.0"
+    },
+    "neuralNetworkLayerTypeHistogram" : {
+      "DivideBroadcastable" : 24,
+      "UnaryPower" : 24,
+      "UnarySqrt" : 24,
+      "Convolution" : 25,
+      "PaddingReflection" : 16,
+      "ReshapeStatic" : 48,
+      "UpsampleBiLinear" : 2,
+      "ReduceMean" : 48,
+      "ActivationTanh" : 1,
+      "Squeeze" : 1,
+      "Add" : 27,
+      "BatchNorm" : 24,
+      "ActivationLeakyReLU" : 20,
+      "ActivationLinear" : 1,
+      "SubtractBroadcastable" : 24
+    },
+    "modelType" : {
+      "name" : "MLModelType_neuralNetwork"
+    },
+    "userDefinedMetadata" : {
+      "com.github.apple.coremltools.version" : "5.1.0",
+      "com.github.apple.coremltools.source" : "torch==1.10.0+cu111"
+    },
+    "generatedClassName" : "animegan_face_paint_512_v2_256",
+    "inputSchema" : [
+      {
+        "height" : "256",
+        "colorspace" : "RGB",
+        "isOptional" : "0",
+        "width" : "256",
+        "isColor" : "1",
+        "formattedType" : "Image (Color 256 × 256)",
+        "hasSizeFlexibility" : "0",
+        "type" : "Image",
+        "shortDescription" : "",
+        "name" : "input"
+      }
+    ],
+    "method" : "predict"
+  }
+]

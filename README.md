@@ -23,13 +23,9 @@ Requires iOS 15 or above
 
 # Filter Collection
 
-### Original
+### Get Person Mask
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg">
-
-### Person Mask
-
-<img width="300" src="https://user-images.githubusercontent.com/23278992/146860762-01faf109-019f-4644-9e02-65c04adc1b79.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/146860762-01faf109-019f-4644-9e02-65c04adc1b79.JPG">
 
 
 ```swift
@@ -38,7 +34,7 @@ let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
 
 ### Swap the background of a person
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/146862832-14c0f002-b4e7-43c6-92e4-8595e99e15fd.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/146862832-14c0f002-b4e7-43c6-92e4-8595e99e15fd.JPG">
 
 ```swift
 let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: yourUIImage, backgroundUIImage: yourBackgroundUIImage)
@@ -46,7 +42,7 @@ let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: y
 
 ### Crop a face rectangle
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">
 
 ```swift
 let faceImage:UIImage? = sematicImage.faceRectangle(uiImage: image)
@@ -54,7 +50,7 @@ let faceImage:UIImage? = sematicImage.faceRectangle(uiImage: image)
 
 ### Crop a body rectangle
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/147012402-f3866730-4996-4036-b7c5-1358bad547b1.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147012402-f3866730-4996-4036-b7c5-1358bad547b1.JPG">
 
 ```swift
 let bodyImage:UIImage? = sematicImage.humanRectangle(uiImage: image)

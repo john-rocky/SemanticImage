@@ -15,7 +15,7 @@ public class SemanticImage {
     let ciContext = CIContext()
     
     lazy var animeRequest:VNCoreMLRequest? =  {
-        let url = try? Bundle.main.url(forResource: "animegan_face_paint_512_v2_256", withExtension: "mlmodelc")
+        let url = try? Bundle.module.url(forResource: "animegan_face_paint_512_v2_256", withExtension: "mlmodelc")
         let mlModel = try! MLModel(contentsOf: url!, configuration: MLModelConfiguration())
         guard let model = try? VNCoreMLModel(for: mlModel) else { return nil }
         let request = VNCoreMLRequest(model: model)

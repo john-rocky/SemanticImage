@@ -51,3 +51,11 @@ let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: y
 ```swift
 let faceImage:UIImage? = sematicImage.faceRectangle(uiImage: image)
 ```
+
+### Crop a body rectangle
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147012402-f3866730-4996-4036-b7c5-1358bad547b1.JPG">
+
+```swift
+let bodyImage:UIImage? = sematicImage.humanRectangle(uiImage: image)
+```

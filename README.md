@@ -76,3 +76,11 @@ let faceImages:[UIImage] = sematicImage.faceRectangles(uiImage: image)
 let bodyImages:[UIImage] = sematicImage.humanRectangles(uiImage: image)
 ```
 
+### Crop an animal(Cat/Dog) rectangle
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147165331-d99b2fbe-b04e-4de9-a215-226da16ab232.jpeg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147165338-1056ce1a-86e7-441e-b782-517b1129e2a2.JPG">
+
+### Crop multiple animal(Cat/Dog) rectangles
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147165104-f3cace3c-ab5c-4e26-a28d-ac50e16eeb23.jpg"> <img width="100" src="https://user-images.githubusercontent.com/23278992/147165102-826e9262-0256-40c8-9fbb-4195ed1485e4.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165100-4afe5856-e0e1-4c82-a725-8a149731e5a9.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165097-0e7b946c-83bb-4f63-85df-3cf2036620a5.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165096-3e0c901b-b973-4086-a86f-b6c96d741b33.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165093-613875ed-107c-42eb-8ee4-376a01789523.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165092-a5037cc7-14ff-436c-bb1a-b1fe79ece681.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165088-3fd812f9-aab5-4ca3-8b68-9e631d334039.JPG">
+

@@ -23,13 +23,9 @@ Requires iOS 15 or above
 
 # Filter Collection
 
-### Original
+### Get Person Mask
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg">
-
-### Person Mask
-
-<img width="300" src="https://user-images.githubusercontent.com/23278992/146860762-01faf109-019f-4644-9e02-65c04adc1b79.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/146860762-01faf109-019f-4644-9e02-65c04adc1b79.JPG">
 
 
 ```swift
@@ -38,7 +34,7 @@ let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
 
 ### Swap the background of a person
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/146862832-14c0f002-b4e7-43c6-92e4-8595e99e15fd.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/146862832-14c0f002-b4e7-43c6-92e4-8595e99e15fd.JPG">
 
 ```swift
 let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: yourUIImage, backgroundUIImage: yourBackgroundUIImage)
@@ -46,7 +42,7 @@ let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: y
 
 ### Crop a face rectangle
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">
 
 ```swift
 let faceImage:UIImage? = sematicImage.faceRectangle(uiImage: image)
@@ -54,7 +50,7 @@ let faceImage:UIImage? = sematicImage.faceRectangle(uiImage: image)
 
 ### Crop a body rectangle
 
-<img width="300" src="https://user-images.githubusercontent.com/23278992/147012402-f3866730-4996-4036-b7c5-1358bad547b1.JPG">
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147012402-f3866730-4996-4036-b7c5-1358bad547b1.JPG">
 
 ```swift
 let bodyImage:UIImage? = sematicImage.humanRectangle(uiImage: image)
@@ -80,7 +76,15 @@ let bodyImages:[UIImage] = sematicImage.humanRectangles(uiImage: image)
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/147165331-d99b2fbe-b04e-4de9-a215-226da16ab232.jpeg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147165338-1056ce1a-86e7-441e-b782-517b1129e2a2.JPG">
 
+```swift
+let animalImage:UIImage? = sematicImage.animalRectangle(uiImage: image)
+```
+
 ### Crop multiple animal(Cat/Dog) rectangles
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/147165104-f3cace3c-ab5c-4e26-a28d-ac50e16eeb23.jpg"> <img width="100" src="https://user-images.githubusercontent.com/23278992/147165102-826e9262-0256-40c8-9fbb-4195ed1485e4.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165100-4afe5856-e0e1-4c82-a725-8a149731e5a9.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165097-0e7b946c-83bb-4f63-85df-3cf2036620a5.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165096-3e0c901b-b973-4086-a86f-b6c96d741b33.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165093-613875ed-107c-42eb-8ee4-376a01789523.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165092-a5037cc7-14ff-436c-bb1a-b1fe79ece681.JPG"><img width="100" src="https://user-images.githubusercontent.com/23278992/147165088-3fd812f9-aab5-4ca3-8b68-9e631d334039.JPG">
+
+```swift
+let animalImages:[UIImage] = sematicImage.animalRectangles(uiImage: image)
+```
 

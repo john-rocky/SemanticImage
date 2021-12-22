@@ -116,6 +116,7 @@ public class SemanticImage {
         do {
             try handler.perform([faceRectangleRequest])
             guard let results = faceRectangleRequest.results else { print("Image processing failed.Please try with another image."); return [] }
+            guard !results.isEmpty else { print("Image processing failed.Please try with another image."); return [] }
             for result in results {
                 let boundingBox = result.boundingBox
                 let faceRect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))
@@ -166,6 +167,36 @@ public class SemanticImage {
         } catch let error {
             print("Vision error \(error)")
             return nil
+        }
+    }
+    
+    public func humanRectangles(uiImage:UIImage) -> [UIImage] {
+        var bodyUIImages:[UIImage] = []
+        let semaphore = DispatchSemaphore(value: 0)
+        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return [] }
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try handler.perform([humanRectanglesRequest])
+            guard let results = humanRectanglesRequest.results else { print("Image processing failed.Please try with another image."); return [] }
+            guard !results.isEmpty else { print("Image processing failed.Please try with another image."); return [] }
+            
+            for result in results {
+                let boundingBox = result.boundingBox
+                let humanRect = VNImageRectForNormalizedRect((boundingBox),Int(ciImage.extent.size.width), Int(ciImage.extent.size.height))
+                let humanImage = ciImage.cropped(to: humanRect)
+                guard let final = ciContext.createCGImage(humanImage, from: humanImage.extent) else { print("Image processing failed.Please try with another image."); return [] }
+                let finalUiimage =  UIImage(cgImage: final)
+                bodyUIImages.append(finalUiimage)
+                if bodyUIImages.count == results.count {
+                    semaphore.signal()
+                }
+            }
+            semaphore.wait()
+            return bodyUIImages
+        } catch let error {
+            print("Vision error \(error)")
+            return []
         }
     }
     

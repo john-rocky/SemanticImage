@@ -10,10 +10,16 @@ public class SemanticImage {
     
     lazy var personSegmentationRequest = VNGeneratePersonSegmentationRequest()
     lazy var faceRectangleRequest = VNDetectFaceRectanglesRequest()
-    lazy var humanRectanglesRequest = VNDetectHumanRectanglesRequest()
+    lazy var humanRectanglesRequest:VNDetectHumanRectanglesRequest = {
+       let request = VNDetectHumanRectanglesRequest()
+        request.upperBodyOnly = false
+        return request
+    }()
     lazy var animalRequest = VNRecognizeAnimalsRequest()
 
     let ciContext = CIContext()
+    
+    // MARK: Segmentation
     
     public func personMaskImage(uiImage:UIImage) -> UIImage? {
         let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
@@ -74,6 +80,24 @@ public class SemanticImage {
         return blendedUIImage
     }
     
+    public func personBlur(uiImage:UIImage, intensity:Float) -> UIImage?{
+        let newUIImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let originalCIImage = CIImage(image: newUIImage),
+              let maskUIImage = personMaskImage(uiImage: newUIImage),
+              let maskCIImage = CIImage(image: maskUIImage) else { print("Image processing failed.Please try with another image."); return nil }
+        let safeCropSize = CGRect(x: 0, y: 0, width: originalCIImage.extent.width * 0.999, height: originalCIImage.extent.height * 0.999)
+        guard let blurBGCIImage = CIFilter(name: "CIGaussianBlur", parameters: [kCIInputImageKey:originalCIImage,
+                                                                         kCIInputRadiusKey:intensity])?.outputImage?.cropped(to: safeCropSize).resize(as: originalCIImage.extent.size) else { return nil }
+        guard let blendedCIImage = CIFilter(name: "CIBlendWithMask", parameters: [
+            kCIInputImageKey: originalCIImage,
+            kCIInputBackgroundImageKey:blurBGCIImage,
+            kCIInputMaskImageKey:maskCIImage])?.outputImage,
+              let safeCGImage = ciContext.createCGImage(blendedCIImage, from: blendedCIImage.extent)else {  print("Image processing failed.Please try with another image."); return nil }
+        
+        let final = UIImage(cgImage: safeCGImage)
+        return final
+    }
+    
     public func faceRectangle(uiImage:UIImage) -> UIImage? {
         let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
         guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return nil }
@@ -107,6 +131,8 @@ public class SemanticImage {
             return nil
         }
     }
+    
+    // MARK: Rectangle
     
     public func faceRectangles(uiImage:UIImage) -> [UIImage] {
         var faceUIImages:[UIImage] = []
@@ -250,6 +276,8 @@ public class SemanticImage {
             return []
         }
     }
+    
+    
     
     func scaleMaskImage(maskCIImage:CIImage, originalCIImage:CIImage) -> CIImage {
         let scaledMaskCIImage = maskCIImage.resize(as: originalCIImage.extent.size)

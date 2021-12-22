@@ -23,7 +23,8 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SemanticImage",
-            dependencies: []),
+            dependencies: [],
+            resources: [.process("animegan_face_paint_512_v2_256.mlmodelc")]),
         .testTarget(
             name: "SemanticImageTests",
             dependencies: ["SemanticImage"]),

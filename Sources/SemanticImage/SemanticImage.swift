@@ -14,6 +14,15 @@ public class SemanticImage {
 
     let ciContext = CIContext()
     
+    lazy var animeRequest:VNCoreMLRequest? =  {
+        let url = try? Bundle.main.url(forResource: "animegan_face_paint_512_v2_256", withExtension: "mlmodelc")
+        let mlModel = try! MLModel(contentsOf: url!, configuration: MLModelConfiguration())
+        guard let model = try? VNCoreMLModel(for: mlModel) else { return nil }
+        let request = VNCoreMLRequest(model: model)
+        request.imageCropAndScaleOption = .scaleFill
+        return request
+    }()
+    
     public func personMaskImage(uiImage:UIImage) -> UIImage? {
         let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
         guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return nil }
@@ -197,6 +206,24 @@ public class SemanticImage {
         } catch let error {
             print("Vision error \(error)")
             return []
+        }
+    }
+    
+    public func anime(uiImage:UIImage) -> UIImage? {
+        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let ciImage = CIImage(image: newImage), let request = animeRequest else { print("Image processing failed.Please try with another image."); return nil }
+        
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try handler.perform([request])
+            guard let result = request.results?.first as? VNPixelBufferObservation else {print("Image processing failed.Please try with another image."); return nil}
+            let resultCIImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+            let resizedCIImage = resultCIImage.resize(as: ciImage.extent.size)
+            let final = UIImage(ciImage: resizedCIImage)
+            return final
+        } catch let error {
+            print("Vision error \(error)")
+            return nil
         }
     }
     

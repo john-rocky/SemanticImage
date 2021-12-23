@@ -16,6 +16,15 @@ public class SemanticImage {
     }()
     lazy var animalRequest = VNRecognizeAnimalsRequest()
 
+    lazy var segmentationRequest:VNCoreMLRequest? =  {
+        let url = try? Bundle.main.url(forResource: "segmentation", withExtension: "mlmodelc")
+        let mlModel = try! MLModel(contentsOf: url!, configuration: MLModelConfiguration())
+        guard let model = try? VNCoreMLModel(for: mlModel) else { return nil }
+        let request = VNCoreMLRequest(model: model)
+        request.imageCropAndScaleOption = .scaleFill
+        return request
+    }()
+    
     let ciContext = CIContext()
     
     // MARK: Segmentation
@@ -125,6 +134,30 @@ public class SemanticImage {
                 guard let final = ciContext.createCGImage(faceImage, from: faceImage.extent) else { print("Image processing failed.Please try with another image."); return nil }
                 let finalUiimage =  UIImage(cgImage: final)
                 return finalUiimage
+        } catch let error {
+            print("Vision error \(error)")
+            return nil
+        }
+    }
+    
+    // MARK: Saliency
+    
+    public func saliencyMask(uiImage:UIImage) -> UIImage? {
+        let newImage = getCorrectOrientationUIImage(uiImage:uiImage)
+        guard let ciImage = CIImage(image: newImage),
+              let request = segmentationRequest else { print("Image processing failed.Please try with another image."); return nil }
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try handler.perform([request])
+            guard let result = request.results?.first as? VNPixelBufferObservation
+                   else { print("Image processing failed.Please try with another image.") ; return nil }
+            let maskCIImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+            let scaledMask = maskCIImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
+
+            guard let safeCGImage = ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+            let maskUIImage = UIImage(cgImage: safeCGImage)
+            return maskUIImage
+
         } catch let error {
             print("Vision error \(error)")
             return nil

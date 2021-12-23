@@ -7,11 +7,14 @@ public class SemanticImage {
     public init() {
     }
     
+    @available(iOS 15.0, *)
     lazy var personSegmentationRequest = VNGeneratePersonSegmentationRequest()
     lazy var faceRectangleRequest = VNDetectFaceRectanglesRequest()
     lazy var humanRectanglesRequest:VNDetectHumanRectanglesRequest = {
        let request = VNDetectHumanRectanglesRequest()
-        request.upperBodyOnly = false
+        if #available(iOS 15.0, *) {
+            request.upperBodyOnly = false
+        }
         return request
     }()
     lazy var animalRequest = VNRecognizeAnimalsRequest()
@@ -34,16 +37,30 @@ public class SemanticImage {
         guard let ciImage = CIImage(image: newImage) else { print("Image processing failed.Please try with another image."); return nil }
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
         do {
-            try handler.perform([personSegmentationRequest])
-            guard let result = personSegmentationRequest.results?.first
-                   else { print("Image processing failed.Please try with another image.") ; return nil }
-            let maskCIImage = CIImage(cvPixelBuffer: result.pixelBuffer)
-            let scaledMask = maskCIImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
+            if #available(iOS 15.0, *) {
+                try handler.perform([personSegmentationRequest])
+                guard let result = personSegmentationRequest.results?.first
+                       else { print("Image processing failed.Please try with another image.") ; return nil }
+                let maskCIImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+                let scaledMask = maskCIImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
 
-            guard let safeCGImage = ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
-            let maskUIImage = UIImage(cgImage: safeCGImage)
-            return maskUIImage
+                guard let safeCGImage = ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+                let maskUIImage = UIImage(cgImage: safeCGImage)
+                return maskUIImage
+            } else {
+                guard let segmentationRequest = segmentationRequest else {
+                    print("This func can't be used in this OS version."); return nil
+                }
+                try handler.perform([segmentationRequest])
+                guard let result = segmentationRequest.results?.first as? VNPixelBufferObservation
+                       else { print("Image processing failed.Please try with another image.") ; return nil }
+                let maskCIImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+                let scaledMask = maskCIImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
 
+                guard let safeCGImage = ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+                let maskUIImage = UIImage(cgImage: safeCGImage)
+                return maskUIImage
+            }
         } catch let error {
             print("Vision error \(error)")
             return nil

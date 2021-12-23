@@ -40,6 +40,15 @@ let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
 let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: yourUIImage, backgroundUIImage: yourBackgroundUIImage)
 ```
 
+### Blur the backgrond of a person
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147166740-a762db75-142b-401c-a726-2a78d84c2496.JPG">
+
+```swift
+let blurredPersonImage:UIImage? = sematicImage.personBlur(uiImage:UIImage, intensity:Float)
+// Blur intensity: 0~100 
+```
+
 ### Crop a face rectangle
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">

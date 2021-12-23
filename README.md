@@ -1,6 +1,6 @@
 # SemanticImage
 
-The collection of image filters.
+A collection of easy-to-use image / video filters.
 
 # How to use
 
@@ -34,8 +34,6 @@ Requires iOS 15 or above
 let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
 ```
 
-
-
 ### Swap the background of a person
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/146862832-14c0f002-b4e7-43c6-92e4-8595e99e15fd.JPG">
@@ -51,6 +49,14 @@ let swappedImage:UIImage? = sematicImage.swapBackgroundOfPerson(personUIImage: y
 ```swift
 let blurredPersonImage:UIImage? = sematicImage.personBlur(uiImage:UIImage, intensity:Float)
 // Blur intensity: 0~100 
+```
+
+### Get a prominent object mask
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147181216-9758bb77-c729-420c-addc-728c5da3b330.jpeg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147181239-4c28c545-8a19-4f12-99f6-78cac3c8c3c7.JPG">
+
+```swift
+let prominentMaskImage:UIImage? = sematicImage.saliencyMask(uiImage:image)
 ```
 
 ### Crop a face rectangle

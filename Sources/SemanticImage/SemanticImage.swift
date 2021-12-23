@@ -455,9 +455,9 @@ public class SemanticImage {
                         self.ciContext.render(outCIImage, to: pixelBufferOut!)
                         pixelBufferAdaptor.append(pixelBufferOut!, withPresentationTime: presentationTime)
                         
-                        if frame % 100 == 0 {
-                            print("\(frame) / \(totalFrame) frames were processed..")
-                        }
+//                        if frame % 100 == 0 {
+//                            print("\(frame) / \(totalFrame) frames were processed..")
+//                        }
                     } else {
                         writerVideoInput.markAsFinished()
                         DispatchQueue.main.async {

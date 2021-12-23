@@ -105,7 +105,7 @@ let animalImages:[UIImage] = sematicImage.animalRectangles(uiImage: image)
 
 ### Apply CIFilter to Video
 
-<img src="https://user-images.githubusercontent.com/23278992/147177254-06633831-7dcd-4b4f-be3c-fc97eadbceac.gif", width=600>
+<img width="600" src="https://user-images.githubusercontent.com/23278992/147177254-06633831-7dcd-4b4f-be3c-fc97eadbceac.gif">
 
 ```swift
 guard let ciFilter = CIFilter(name: "CIEdgeWork", parameters: [kCIInputRadiusKey:3.0]) else { return }

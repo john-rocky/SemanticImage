@@ -1,6 +1,6 @@
 # SemanticImage
 
-The collection of image filters.
+A collection of easy-to-use image / video filters.
 
 # How to use
 

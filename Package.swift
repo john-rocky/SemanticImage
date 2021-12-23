@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SemanticImage",
     platforms: [
-            .iOS(.v14)
+            .iOS(.v15)
             ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -24,7 +24,7 @@ let package = Package(
         .target(
             name: "SemanticImage",
             dependencies: [],
-            resources: [.process("animegan_face_paint_512_v2_256.mlmodelc")]),
+            resources: [.process("segmentation.mlmodelc")]),
         .testTarget(
             name: "SemanticImageTests",
             dependencies: ["SemanticImage"]),

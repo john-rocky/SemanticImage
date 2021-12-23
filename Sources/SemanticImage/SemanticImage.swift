@@ -282,7 +282,7 @@ public class SemanticImage {
             let outCIImage = ciFilter.outputImage
             return outCIImage
         } , { err, processedVideoURL in
-            guard err == nil else { print(err?.localizedDescription); return }
+            guard err == nil else { print(err?.localizedDescription as Any); return }
             completion?(err,processedVideoURL)
         })
     }
@@ -360,7 +360,6 @@ public class SemanticImage {
         let degrees = (radians * 180.0) / .pi
         
         var writerVideoInput: AVAssetWriterInput
-        print(degrees)
         switch degrees {
         case 90:
             let rotateTransform = CGAffineTransform(rotationAngle: 0)
@@ -380,7 +379,6 @@ public class SemanticImage {
             isFrameRotated = true
             writerVideoInput.transform = rotateTransform
         default:
-            let rotateTransform = CGAffineTransform(rotationAngle: 0)
             writerVideoInput = AVAssetWriterInput.init(
                 mediaType: AVMediaType.video,
                 outputSettings: [

@@ -59,6 +59,14 @@ let blurredPersonImage:UIImage? = sematicImage.personBlur(uiImage:UIImage, inten
 let prominentMaskImage:UIImage? = sematicImage.saliencyMask(uiImage:image)
 ```
 
+### Swap the background of the prominent object
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147267778-f158f6c9-a0bf-46ac-b4af-7a1c3008abd6.jpeg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147267793-39c9ae74-ada5-4a29-90b0-eda39145bb61.jpeg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147267801-54b04b4a-fc90-4dd7-bffb-86dc7983c17b.JPG">
+
+```swift
+let backgroundSwapImage:UIImage? = sematicImage.saliencyBlend(objectUIImage: image, backgroundUIImage: bgImage)
+```
+
 ### Crop a face rectangle
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">

@@ -23,6 +23,8 @@ Requires iOS 15 or above
 
 # Filter Collection
 
+## Image
+
 ### Get Person Mask
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/146860762-01faf109-019f-4644-9e02-65c04adc1b79.JPG">
@@ -31,6 +33,8 @@ Requires iOS 15 or above
 ```swift
 let maskImage:UIImage? = semanticImage.personMaskImage(uiImage: yourUIImage)
 ```
+
+
 
 ### Swap the background of a person
 
@@ -97,3 +101,16 @@ let animalImage:UIImage? = sematicImage.animalRectangle(uiImage: image)
 let animalImages:[UIImage] = sematicImage.animalRectangles(uiImage: image)
 ```
 
+## Video
+
+### Apply CIFilter to Video
+
+<img width="600" src="https://user-images.githubusercontent.com/23278992/147177254-06633831-7dcd-4b4f-be3c-fc97eadbceac.gif">
+
+```swift
+guard let ciFilter = CIFilter(name: "CIEdgeWork", parameters: [kCIInputRadiusKey:3.0]) else { return }
+sematicImage.ciFilterVideo(videoURL: url, ciFilter, { err, processedURL in
+    // Handle processedURL in here.
+})
+// This process takes about the same time as the video playback time.
+```

@@ -366,7 +366,7 @@ public class SemanticImage {
         }
     }
     
-    public func swapBGOfSalientObjectVideo(videoURL:URL, _ backgroundUIImage: UIImage, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
+    public func swapBGOfSalientObjectVideo(videoURL:URL, backgroundUIImage: UIImage, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
         guard let bgCIImage = CIImage(image: backgroundUIImage) else { print("background image is nil") ; return}
         applyProcessingOnVideo(videoURL: videoURL, { ciImage in
             let personCIImage = ciImage
@@ -421,7 +421,7 @@ public class SemanticImage {
         })
     }
     
-    public func swapBackgroundOfPersonVideo(videoURL:URL, _ backgroundUIImage: UIImage, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
+    public func swapBackgroundOfPersonVideo(videoURL:URL, backgroundUIImage: UIImage, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
         guard let bgCIImage = CIImage(image: backgroundUIImage) else { print("background image is nil") ; return}
         applyProcessingOnVideo(videoURL: videoURL, { ciImage in
             let personCIImage = ciImage
@@ -487,7 +487,7 @@ public class SemanticImage {
         })
     }
     
-    public func ciFilterVideo(videoURL:URL, _ ciFilter: CIFilter, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
+    public func ciFilterVideo(videoURL:URL, ciFilter: CIFilter, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
         applyProcessingOnVideo(videoURL: videoURL, { ciImage in
             ciFilter.setValue(ciImage, forKey: kCIInputImageKey)
             let outCIImage = ciFilter.outputImage

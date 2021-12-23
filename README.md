@@ -112,4 +112,5 @@ guard let ciFilter = CIFilter(name: "CIEdgeWork", parameters: [kCIInputRadiusKey
 sematicImage.ciFilterVideo(videoURL: url, ciFilter, { err, processedURL in
     // Handle processedURL in here.
 })
+// This process takes about the same time as the video playback time.
 ```

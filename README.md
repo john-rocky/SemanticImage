@@ -19,7 +19,7 @@ import SemanticImage
 let semanticImage = SemanticImage()
 ```
 
-**Requires iOS 13 or above**
+**Requires iOS 14 or above**
 
 # Filter Collection
 
@@ -123,8 +123,44 @@ let animalImages:[UIImage] = sematicImage.animalRectangles(uiImage: image)
 
 ```swift
 guard let ciFilter = CIFilter(name: "CIEdgeWork", parameters: [kCIInputRadiusKey:3.0]) else { return }
-sematicImage.ciFilterVideo(videoURL: url, ciFilter, { err, processedURL in
+sematicImage.ciFilterVideo(videoURL: url, ciFilter: ciFilter, { err, processedURL in
     // Handle processedURL in here.
 })
 // This process takes about the same time as the video playback time.
 ```
+
+### Add virtual background of the person video
+
+<img width="600" src="https://user-images.githubusercontent.com/23278992/147275276-5c108efd-f61d-4ba7-a27d-c3df5bb7cc5b.gif">
+
+```swift
+sematicImage.swapBackgroundOfPersonVideo(videoURL: url, backgroundUIImage: uiImage, { err, processedURL in
+    // Handle processedURL in here.
+})
+    // This process takes about the same time as the video playback time.
+```
+
+### Add virtual background of the salient object video
+
+<img width="600" src="https://user-images.githubusercontent.com/23278992/147276773-6571ca77-4b05-4ab8-a64d-1dafa8dd4be4.gif">
+
+```swift
+sematicImage.swapBGOfSalientObjectVideo(videoURL: url, backgroundUIImage: uiImage, { err, processedURL in
+    // Handle processedURL in here.
+})
+    // This process takes about the same time as the video playback time.
+```
+
+# Author
+
+Daisuke Majima
+
+Freelance iOS programmer from Japan.
+
+PROFILES:
+
+WORKS:
+
+BLOGS: Medium
+
+CONTACTS: rockyshikoku@gmail.com

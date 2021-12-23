@@ -21,9 +21,9 @@ public class SemanticImage {
     lazy var animalRequest = VNRecognizeAnimalsRequest()
 
     lazy var segmentationRequest:VNCoreMLRequest? =  {
-//        let url = try? Bundle.module.url(forResource: "segmentation", withExtension: "mlmodelc")
-//        let mlModel = try! MLModel(contentsOf: url!, configuration: MLModelConfiguration())
-        guard let model = try? VNCoreMLModel(for: segmentation().model) else { return nil }
+        let url = try? Bundle.module.url(forResource: "segmentation", withExtension: "mlmodelc")
+        let mlModel = try! MLModel(contentsOf: url!, configuration: MLModelConfiguration())
+        guard let model = try? VNCoreMLModel(for: mlModel) else { return nil }
         let request = VNCoreMLRequest(model: model)
         request.imageCropAndScaleOption = .scaleFill
         return request

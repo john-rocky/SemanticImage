@@ -53,6 +53,16 @@ let blurredPersonImage:UIImage? = sematicImage.personBlur(uiImage:UIImage, inten
 // Blur intensity: 0~100 
 ```
 
+### Get a prominent object mask
+
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147181216-9758bb77-c729-420c-addc-728c5da3b330.jpeg
+"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147181239-4c28c545-8a19-4f12-99f6-78cac3c8c3c7.JPG">
+
+```swift
+let prominentMaskImage:UIImage? = sematicImage.saliencyMask(uiImage:image)
+```
+
 ### Crop a face rectangle
 
 <img width="300" src="https://user-images.githubusercontent.com/23278992/146860733-acf875a5-043c-4ebb-ab3c-f98e124f6a93.jpg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147011663-326292e3-982b-4214-bbb5-ebb1ceb06e02.JPG">

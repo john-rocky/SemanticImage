@@ -365,6 +365,127 @@ public class SemanticImage {
         }
     }
     
+    public func swapBGOfSalientObjectVideo(videoURL:URL, _ backgroundUIImage: UIImage, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
+        guard let bgCIImage = CIImage(image: backgroundUIImage) else { print("background image is nil") ; return}
+        applyProcessingOnVideo(videoURL: videoURL, { ciImage in
+            let personCIImage = ciImage
+            let backgroundCIImage = bgCIImage
+            var maskCIImage:CIImage
+            let handler = VNImageRequestHandler(ciImage: personCIImage, options: [:])
+            do {
+                guard let segmentationRequest = self.segmentationRequest else {
+                    print("This func can't be used in this OS version."); return nil
+                }
+                try handler.perform([segmentationRequest])
+                guard let result = segmentationRequest.results?.first as? VNPixelBufferObservation
+                else { print("Image processing failed.Please try with another image.") ; return nil }
+                let maskImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+                let scaledMask = maskImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
+                
+                guard let safeCGImage = self.ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+                maskCIImage = CIImage(cgImage: safeCGImage)
+            } catch let error {
+                print("Vision error \(error)")
+                return ciImage
+            }
+            
+            let backgroundImageSize = backgroundCIImage.extent
+            let originalSize = personCIImage.extent
+            var scale:CGFloat = 1
+            let widthScale =  originalSize.width / backgroundImageSize.width
+            let heightScale = originalSize.height / backgroundImageSize.height
+            if widthScale > heightScale {
+                scale = personCIImage.extent.width / backgroundImageSize.width
+            } else {
+                scale = personCIImage.extent.height / backgroundImageSize.height
+            }
+            
+            let scaledBG = backgroundCIImage.resize(as: CGSize(width: backgroundCIImage.extent.width*scale, height: backgroundCIImage.extent.height*scale))
+            let BGCenter = CGPoint(x: scaledBG.extent.width/2, y: scaledBG.extent.height/2)
+            let originalExtent = personCIImage.extent
+            let cropRect = CGRect(x: BGCenter.x-(originalExtent.width/2), y: BGCenter.y-(originalExtent.height/2), width: originalExtent.width, height: originalExtent.height)
+            let croppedBG = scaledBG.cropped(to: cropRect)
+            let translate = CGAffineTransform(translationX: -croppedBG.extent.minX, y: -croppedBG.extent.minY)
+            let traslatedBG = croppedBG.transformed(by: translate)
+            guard let blended = CIFilter(name: "CIBlendWithMask", parameters: [
+                kCIInputImageKey: personCIImage,
+                kCIInputBackgroundImageKey:traslatedBG,
+                kCIInputMaskImageKey:maskCIImage])?.outputImage,
+                  let safeCGImage = self.ciContext.createCGImage(blended, from: blended.extent) else {return ciImage}
+                    let outCIImage = CIImage(cgImage: safeCGImage)
+            return outCIImage
+        } , { err, processedVideoURL in
+            guard err == nil else { print(err?.localizedDescription); return }
+            completion?(err,processedVideoURL)
+        })
+    }
+    
+    public func swapBackgroundOfPersonVideo(videoURL:URL, _ backgroundUIImage: UIImage, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
+        guard let bgCIImage = CIImage(image: backgroundUIImage) else { print("background image is nil") ; return}
+        applyProcessingOnVideo(videoURL: videoURL, { ciImage in
+            let personCIImage = ciImage
+            let backgroundCIImage = bgCIImage
+            var maskCIImage:CIImage
+            let handler = VNImageRequestHandler(ciImage: personCIImage, options: [:])
+            do {
+                if #available(iOS 15.0, *) {
+                    try handler.perform([self.personSegmentationRequest])
+                    guard let result = self.personSegmentationRequest.results?.first
+                           else { print("Image processing failed.Please try with another image.") ; return nil }
+                    let maskImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+                    let scaledMask = maskImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
+
+                    guard let safeCGImage = self.ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+                    maskCIImage = CIImage(cgImage: safeCGImage)
+                } else {
+                    guard let segmentationRequest = self.segmentationRequest else {
+                        print("This func can't be used in this OS version."); return nil
+                    }
+                    try handler.perform([segmentationRequest])
+                    guard let result = segmentationRequest.results?.first as? VNPixelBufferObservation
+                           else { print("Image processing failed.Please try with another image.") ; return nil }
+                    let maskImage = CIImage(cvPixelBuffer: result.pixelBuffer)
+                    let scaledMask = maskImage.resize(as: CGSize(width: ciImage.extent.width, height: ciImage.extent.height))
+
+                    guard let safeCGImage = self.ciContext.createCGImage(scaledMask, from: scaledMask.extent) else { print("Image processing failed.Please try with another image.") ; return nil }
+                    maskCIImage = CIImage(cgImage: safeCGImage)
+                }
+            } catch let error {
+                print("Vision error \(error)")
+                return ciImage
+            }
+            
+            let backgroundImageSize = backgroundCIImage.extent
+            let originalSize = personCIImage.extent
+            var scale:CGFloat = 1
+            let widthScale =  originalSize.width / backgroundImageSize.width
+            let heightScale = originalSize.height / backgroundImageSize.height
+            if widthScale > heightScale {
+                scale = personCIImage.extent.width / backgroundImageSize.width
+            } else {
+                scale = personCIImage.extent.height / backgroundImageSize.height
+            }
+            
+            let scaledBG = backgroundCIImage.resize(as: CGSize(width: backgroundCIImage.extent.width*scale, height: backgroundCIImage.extent.height*scale))
+            let BGCenter = CGPoint(x: scaledBG.extent.width/2, y: scaledBG.extent.height/2)
+            let originalExtent = personCIImage.extent
+            let cropRect = CGRect(x: BGCenter.x-(originalExtent.width/2), y: BGCenter.y-(originalExtent.height/2), width: originalExtent.width, height: originalExtent.height)
+            let croppedBG = scaledBG.cropped(to: cropRect)
+            let translate = CGAffineTransform(translationX: -croppedBG.extent.minX, y: -croppedBG.extent.minY)
+            let traslatedBG = croppedBG.transformed(by: translate)
+            guard let blended = CIFilter(name: "CIBlendWithMask", parameters: [
+                kCIInputImageKey: personCIImage,
+                kCIInputBackgroundImageKey:traslatedBG,
+                kCIInputMaskImageKey:maskCIImage])?.outputImage,
+                  let safeCGImage = self.ciContext.createCGImage(blended, from: blended.extent) else {return ciImage}
+                    let outCIImage = CIImage(cgImage: safeCGImage)
+            return outCIImage
+        } , { err, processedVideoURL in
+            guard err == nil else { print(err?.localizedDescription); return }
+            completion?(err,processedVideoURL)
+        })
+    }
+    
     public func ciFilterVideo(videoURL:URL, _ ciFilter: CIFilter, _ completion: ((_ err: NSError?, _ filteredVideoURL: URL?) -> Void)?) {
         applyProcessingOnVideo(videoURL: videoURL, { ciImage in
             ciFilter.setValue(ciImage, forKey: kCIInputImageKey)

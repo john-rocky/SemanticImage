@@ -151,6 +151,19 @@ sematicImage.swapBGOfSalientObjectVideo(videoURL: url, backgroundUIImage: uiImag
     // This process takes about the same time as the video playback time.
 ```
 
+### Process video
+
+<img src=https://user-images.githubusercontent.com/23278992/148341103-a44f2b04-2f93-4c69-8cfd-f5ba36801075.gif width=600>
+
+```swift
+semanticImage.applyProcessingOnVideo(videoURL: url, { ciImage in
+    // Write the processing of ciImage (i.e. video frame) here.
+    return newImage
+}, {  err, editedURL in
+   // The processed video URL is returned
+})
+```
+
 # Author
 
 Daisuke Majima

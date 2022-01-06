@@ -498,7 +498,7 @@ public class SemanticImage {
         })
     }
     
-    func applyProcessingOnVideo(videoURL:URL, _ processingFunction: @escaping ((CIImage) -> CIImage?), _ completion: ((_ err: NSError?, _ processedVideoURL: URL?) -> Void)?) {
+    public func applyProcessingOnVideo(videoURL:URL, _ processingFunction: @escaping ((CIImage) -> CIImage?), _ completion: ((_ err: NSError?, _ processedVideoURL: URL?) -> Void)?) {
         var frame:Int = 0
         var isFrameRotated = false
         let asset = AVURLAsset(url: videoURL)

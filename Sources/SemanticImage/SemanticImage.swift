@@ -33,7 +33,8 @@ public class SemanticImage {
     let ciContext = CIContext()
     
     public func getDocumentImage(image:UIImage) -> UIImage? {
-        let ciImage = CIImage(image: image)!
+        let newImage = getCorrectOrientationUIImage(uiImage:image)
+        let ciImage = CIImage(image: newImage)!
         let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
         try! handler.perform([rectangleRequest])
         guard let result = rectangleRequest.results?.first else { return nil }

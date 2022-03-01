@@ -115,6 +115,14 @@ let animalImage:UIImage? = sematicImage.animalRectangle(uiImage: image)
 let animalImages:[UIImage] = sematicImage.animalRectangles(uiImage: image)
 ```
 
+### Crop and warp document
+
+<img width="300" src="https://user-images.githubusercontent.com/23278992/147165331-d99b2fbe-b04e-4de9-a215-226da16ab232.jpeg"> <img width="300" src="https://user-images.githubusercontent.com/23278992/147165338-1056ce1a-86e7-441e-b782-517b1129e2a2.JPG">
+
+```swift
+let animalImage:UIImage? = sematicImage.animalRectangle(uiImage: image)
+```
+
 ## Video
 
 ### Apply CIFilter to Video

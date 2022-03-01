@@ -28,8 +28,46 @@ public class SemanticImage {
         request.imageCropAndScaleOption = .scaleFill
         return request
     }()
-    
+    lazy var rectangleRequest = VNDetectRectanglesRequest()
+
     let ciContext = CIContext()
+    
+    public func getDocumentImage(image:UIImage) -> UIImage? {
+        let ciImage = CIImage(image: image)!
+        let handler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        try! handler.perform([rectangleRequest])
+        guard let result = rectangleRequest.results?.first else { return nil }
+        
+        let topLeft = CGPoint(x: result.topLeft.x, y: 1-result.topLeft.y)
+        let topRight = CGPoint(x: result.topRight.x, y: 1-result.topRight.y)
+        let bottomLeft = CGPoint(x: result.bottomLeft.x, y: 1-result.bottomLeft.y)
+        let bottomRight = CGPoint(x: result.bottomRight.x, y: 1-result.bottomRight.y)
+
+        
+        let deNormalizedTopLeft = VNImagePointForNormalizedPoint(topLeft, Int(ciImage.extent.width), Int(ciImage.extent.height))
+        let deNormalizedTopRight = VNImagePointForNormalizedPoint(topRight, Int(ciImage.extent.width), Int(ciImage.extent.height))
+        let deNormalizedBottomLeft = VNImagePointForNormalizedPoint(bottomLeft, Int(ciImage.extent.width), Int(ciImage.extent.height))
+        let deNormalizedBottomRight = VNImagePointForNormalizedPoint(bottomRight, Int(ciImage.extent.width), Int(ciImage.extent.height))
+
+        let croppedImage = getCroppedImage(image: ciImage, topL: deNormalizedTopLeft, topR: deNormalizedTopRight, botL: deNormalizedBottomLeft, botR: deNormalizedBottomRight)
+        let safeCGImage = context.createCGImage(croppedImage, from: croppedImage.extent)
+        let croppedUIImage = UIImage(cgImage: safeCGImage!)
+        return croppedUIImage
+    }
+    
+    private func getCroppedImage(image: CIImage, topL: CGPoint, topR: CGPoint, botL: CGPoint, botR: CGPoint) -> CIImage {
+        let rectCoords = NSMutableDictionary(capacity: 4)
+        
+        rectCoords["inputTopLeft"] = topL.toVector(image: image)
+        rectCoords["inputTopRight"] = topR.toVector(image: image)
+        rectCoords["inputBottomLeft"] = botL.toVector(image: image)
+        rectCoords["inputBottomRight"] = botR.toVector(image: image)
+        
+        guard let coords = rectCoords as? [String : Any] else {
+            return image
+        }
+        return image.applyingFilter("CIPerspectiveCorrection", parameters: coords)
+    }
     
     // MARK: Segmentation
     
@@ -728,6 +766,12 @@ extension CIImage {
         let selfSize = extent.size
         let transform = CGAffineTransform(scaleX: size.width / selfSize.width, y: size.height / selfSize.height)
         return transformed(by: transform)
+    }
+}
+
+extension CGPoint {
+    func toVector(image: CIImage) -> CIVector {
+        return CIVector(x: x, y: image.extent.height-y)
     }
 }
 

@@ -50,7 +50,7 @@ public class SemanticImage {
         let deNormalizedBottomRight = VNImagePointForNormalizedPoint(bottomRight, Int(ciImage.extent.width), Int(ciImage.extent.height))
 
         let croppedImage = getCroppedImage(image: ciImage, topL: deNormalizedTopLeft, topR: deNormalizedTopRight, botL: deNormalizedBottomLeft, botR: deNormalizedBottomRight)
-        let safeCGImage = context.createCGImage(croppedImage, from: croppedImage.extent)
+        let safeCGImage = ciContext.createCGImage(croppedImage, from: croppedImage.extent)
         let croppedUIImage = UIImage(cgImage: safeCGImage!)
         return croppedUIImage
     }

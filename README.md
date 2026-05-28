@@ -1,17 +1,5 @@
 # SemanticImage
 
-**Plug-and-play image/video filters built on Vision + CoreML + CoreImage — for iOS. Person segmentation, background blur, depth-based bokeh, style transfer, super-resolution.**
-
-By [Daisuke Majima](https://john-rocky.github.io). Maintainer of [CoreML-Models](https://github.com/john-rocky/CoreML-Models) (1,749★).
-
-These filters power [Blur. on the App Store](https://apps.apple.com/us/developer/daisuke-majima/id1350309854) and similar shipping iOS apps.
-
-💼 **Open to Staff / Senior iOS / Mobile ML roles** — [john-rocky.github.io](https://john-rocky.github.io)
-
----
-
-# SemanticImage
-
 A collection of easy-to-use image / video filters.
 
 # How to use
